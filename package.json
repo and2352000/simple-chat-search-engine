@@ -1,0 +1,20 @@
+{
+  "name": "langchain-practice",
+  "version": "1.0.0",
+  "main": "index.js",
+  "scripts": {
+    "start": "node src/index.js"
+  },
+  "keywords": [],
+  "author": "",
+  "license": "ISC",
+  "description": "",
+  "dependencies": {
+    "@langchain/core": "^0.3.66",
+    "@langchain/langgraph": "^0.3.11",
+    "@langchain/openai": "^0.6.2",
+    "dotenv": "^17.2.0",
+    "langchain": "^0.3.30",
+    "uuid": "^11.1.0"
+  }
+}
