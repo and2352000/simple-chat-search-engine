@@ -1,0 +1,35 @@
+{
+    "compilerOptions": {
+        "target": "ES2018", // Adjust the target version as needed
+        "module": "CommonJS",
+        "strict": true,
+        "esModuleInterop": true,
+        "skipLibCheck": true,
+        "forceConsistentCasingInFileNames": true,
+        "moduleResolution": "node",
+        "outDir": "dist", // Output directory for compiled JavaScript files
+        "emitDecoratorMetadata": true,
+        "experimentalDecorators": true,
+        "strictPropertyInitialization": false,
+        "baseUrl": "./",
+        "resolveJsonModule": true,
+        "declaration": true,
+        "paths": {
+            "*": [
+                "node_modules/*",
+                "src/*",
+            ]
+        },
+        "composite": true
+    },
+    "references": [],
+    "include": [
+        "src/**/*.ts",
+        "src/**/*.json",
+        "index.ts",
+        "setupContainer.ts"
+    ],
+    "exclude": [
+        "node_modules"
+    ]
+}

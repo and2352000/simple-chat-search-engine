@@ -1,6 +1,4 @@
-import dotenv from "dotenv";
-dotenv.config();
-
+import config from "./config";
 import { ChatOpenAI } from "@langchain/openai";
 
 import {
@@ -13,10 +11,10 @@ import {
 
 import { v4 as uuidv4 } from "uuid";
 
-import { HumanMessage, SystemMessage } from "@langchain/core/messages";
+// import { HumanMessage, SystemMessage } from "@langchain/core/messages";
 
 // const llm = new ChatOpenAI({ model: "gpt-4o-mini", temperature: 0, apiKey: process.env.OPENAI_API_KEY });
-const llm = new ChatOpenAI({ model: "gpt-5-mini-2025-08-07", temperature: 1, apiKey: process.env.OPENAI_API_KEY });
+const llm = new ChatOpenAI({ model: "gpt-5-mini-2025-08-07", temperature: 1, apiKey: config.OPENAI_API_KEY });
 
 //NOTE: chat example
 // const result = await llm.invoke([
@@ -27,18 +25,17 @@ const llm = new ChatOpenAI({ model: "gpt-5-mini-2025-08-07", temperature: 1, api
 
 // console.log(result.content);
 
-
+async function bootstrap() {
 
 // Define the function that calls the model
-const callModel = async (state) => {
-  const response = await llm.invoke(state.messages);
-  return { messages: response };
-};
 
 // Define a new graph
 const workflow = new StateGraph(MessagesAnnotation)
   // Define the node and edge
-  .addNode("model", callModel)
+  .addNode("model", async (state) => {
+    const response = await llm.invoke(state.messages);
+    return { messages: response };
+  })
   .addEdge(START, "model")
   .addEdge("model", END);
 
@@ -68,3 +65,7 @@ const input2 = [
 const output2 = await app.invoke({ messages: input2 }, config);
 console.log(output2.messages);
 // console.log(output2.messages[output2.messages.length - 1]);
+
+
+}
+bootstrap();
