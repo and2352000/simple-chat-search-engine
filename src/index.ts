@@ -12,7 +12,7 @@ const server = new McpServer({
 
 // Add an addition tool
 server.registerTool(
-    'Score Calculator',
+    'Score-Calculator',
     {
         title: 'Score Calculator',
         description: 'Calculate the score of a student',
@@ -31,7 +31,7 @@ server.registerTool(
 
 // 客服員工應對查詢QA 建議
 server.registerTool(
-  'Customer Service QA Suggestion',
+  'Customer-Service-QA-Suggestion',
   {
       title: 'Customer Service QA Suggestion',
       description: 'Suggest the best answer for the customer service query',
