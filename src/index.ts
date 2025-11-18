@@ -2,7 +2,10 @@
 import { McpServer, ResourceTemplate } from '@modelcontextprotocol/sdk/server/mcp.js';
 import { StreamableHTTPServerTransport } from '@modelcontextprotocol/sdk/server/streamableHttp.js';
 import express from 'express';
+import cors from 'cors';
 import { z } from 'zod';
+import { dataSource } from './typeorm/datasource';
+import { QAService } from './service/qa';
 
 // Create an MCP server
 const server = new McpServer({
@@ -70,6 +73,7 @@ server.registerResource(
 
 // Set up Express and HTTP transport
 const app = express();
+app.use(cors())
 app.use(express.json());
 
 // Handle GET requests for SSE stream connection
@@ -103,8 +107,17 @@ app.post('/mcp', async (req, res) => {
     await transport.handleRequest(req, res, req.body);
 });
 
+const qaService =  QAService.getInstance();
+app.post('/qa', async (req, res) => {
+    const result = await qaService.createQA(req.body);
+    res.json(result);
+    // res.json('ok');
+});
+
 const port = parseInt(process.env.PORT || '3000');
-app.listen(port, () => {
+app.listen(port, async () => {
+    await dataSource.initialize()
+
     console.log(`Demo MCP Server running on http://localhost:${port}/mcp`);
 }).on('error', error => {
     console.error('Server error:', error);
