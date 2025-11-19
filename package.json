@@ -4,6 +4,7 @@
   "main": "index.js",
   "scripts": {
     "dev": "ts-node src/index.ts",
+    "data:insert": "ts-node src/smaple_data/qa_sample_data.ts",
     "build": "tsc",
     "bundle": "tsup src/index.ts  --legacy-output dist/index.js",
     "start": "node dist/src/index.js",
