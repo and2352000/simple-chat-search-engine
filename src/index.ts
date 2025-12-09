@@ -13,24 +13,26 @@ const server = new McpServer({
   version: "1.0.0"
 });
 
-// Add an addition tool
-// server.registerTool(
-//     'Score-Calculator',
-//     {
-//         title: 'Score Calculator',
-//         description: 'Calculate the score of a student',
-//         inputSchema: { score: z.number() },
-//         outputSchema: { result: z.number() }
-//     },
-//     async ({ score }) => {
-//         const bonus = Math.random() * 10;
-//         const output = { result: score + bonus };
-//         return {
-//             content: [{ type: 'text', text: JSON.stringify(output) }],
-//             structuredContent: output
-//         }
-//     }
-// );
+//查詢客戶訂單狀態
+server.registerTool(
+    'Order-Query',
+    {
+        title: 'Order Query',
+        description: 'Query the order status of a customer',
+        inputSchema: { orderId: z.string() },
+        outputSchema: { result: z.object({ orderId: z.string(), status: z.string() }) }
+    },
+    async ({ orderId }) => {
+        const mockOrderStatus = {
+            orderId,
+            status: "客戶已經收到商品 刮鬍刀 30天"
+        }
+        return {
+            content: [{ type: 'text', text: JSON.stringify(mockOrderStatus) }],
+            structuredContent: {result: mockOrderStatus}
+        }
+    }
+);
 
 // 客服員工應對查詢QA 建議
 server.registerTool(
@@ -52,51 +54,33 @@ server.registerTool(
 );
 
 // server.registerResource(
-//     'customer-service-qa-suggestion',
+//     'Customer-Service-QA-Suggestion',
 //     new ResourceTemplate(
 //         'customer-service-qa-suggestion://{query}',
-//         { list: undefined } // Resource listing not exposed
+//         { 
+//             list: async () => {
+//                 // 返回空陣列，因為這是動態 resource，需要 query 參數才能產生具體的 resource
+//                 // 這樣至少會讓這個 template 出現在 resources/list 中
+//                 return { resources: [{ name: 'Customer Service QA Suggestion', uri: 'customer-service-qa-suggestion://{query}' }] };
+//             }
+//         }
 //     ),
 //     {
 //         title: 'Customer Service QA Suggestion Resource',
-//         description: '根據客服查詢推薦最適合的問答組合，優先利用MCP Tool解決客戶問題'
+//         description: '根據客服查詢推薦最適合的問答組合，解決客戶問題'
 //     },
 //     async (uri, { query }) => {
-//         // 理解客戶意思切好關鍵字詞透過 MCP Tool 搜索
-//         // 有關克服的問題一率先使用 MCP Tool
-//         // 請用優先使用MCP Tool 來解決問題
-
-//         const resolvedQuery = Array.isArray(query) ? query[0] : (query ?? '');
-//         const result = await qaService.searchQA(resolvedQuery);
+//         const queryStr = Array.isArray(query) ? query[0] : query;
+//         const result = await qaService.searchQA(queryStr);
 //         return {
-//             contents: [
-//                 {
-//                     uri: uri.href,
-//                     text: JSON.stringify(result)
-//                 }
-//             ]
-//         };
-//     }
-// );
-
-
-// Add a dynamic greeting resource
-// server.registerResource(
-//     'greeting',
-//     new ResourceTemplate('greeting://{name}', { list: undefined }),
-//     {
-//         title: 'Greeting Resource', // Display name for UI
-//         description: 'Dynamic greeting generator'
-//     },
-//     async (uri, { name }) => ({
-//         contents: [
-//             {
+//             contents: [{
 //                 uri: uri.href,
-//                 text: `Hello, ${name}!`
-//             }
-//         ]
-//     })
+//                 text: JSON.stringify({ result })
+//             }]
+//         };
+//     },
 // );
+
 
 // Set up Express and HTTP transport
 const app = express();

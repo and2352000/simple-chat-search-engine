@@ -2,6 +2,12 @@
 description: Using MCP Tool be first priority solution
 alwaysApply: true
 ---
-- 理解客戶意思切好關鍵字詞透過 MCP Tool 搜索 
-- 有關客服的問題一率先使用 MCP Tool
-- 回覆訊息除了建議回覆的草搞，也一並附上資料來源的原始資料
+請照以下順序執行
+- 以下問題一率優先請客戶再提供貨號，才去執行 MCP tool
+  - 商品壞掉
+  - 保固問題
+  - 退換貨問題
+- 拿到貨號透過 Order-Query查詢商品狀態
+- 確認好商品狀態再切好關鍵字詞透過 MCP Tool 搜索 
+- 有關客服的問題一率先使用 MCP Tool，其他寫程式的問題不要使用
+- 回覆訊息除了建議回覆的草搞，也一並附上資料來源的原始資料(把原來的JSON response 直接附上)
